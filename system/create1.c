@@ -3,12 +3,13 @@
 #include <xinu.h>
 
 local	int newpid();
-
+qid16	readylist;			/* Index of ready list		*/
+//
 /*------------------------------------------------------------------------
  *  create  -  Create a process to start running a function on x86
  *------------------------------------------------------------------------
  */
-pid32	create(
+pid32	create1(
 	  void		*funcaddr,	/* Address of the function	*/
 	  uint32	ssize,		/* Stack size in bytes		*/
 	  pri16		priority,	/* Process priority > 0		*/
@@ -39,27 +40,20 @@ pid32	create(
 	prptr = &proctab[pid];
 
 	/* Initialize process table entry for new process */
-	prptr->prstate = PR_SUSP;	/* Initial state is suspended	*/
-	#if XTEST
+	prptr->prstate = PR_READY;	/* state is ready	*/
 	kprintf("The process state is: %d\n", prptr->prstate);
-	#endif
+
 	prptr->prprio = priority;
-	#if XTEST
 	kprintf("The prioroty is: %d\n", prptr->prprio);
-	#endif
 	prptr->prstkbase = (char *)saddr;
-	#if XTEST
 	kprintf("The stack pointer is: %x\n", prptr->prstkbase);
-	#endif
 	prptr->prstklen = ssize;
 	prptr->prname[PNMLEN-1] = NULLCH;
 	for (i=0 ; i<PNMLEN-1 && (prptr->prname[i]=name[i])!=NULLCH; i++)
 		;
 	prptr->prsem = -1;
 	prptr->prparent = (pid32)getpid();
-	#if XTEST
 	kprintf("The ppid is: %d\n", prptr->prparent);
-	#endif
 	prptr->prhasmsg = FALSE;
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
@@ -106,6 +100,9 @@ pid32	create(
 	*--saddr = 0;			/* %edi */
 	*pushsp = (unsigned long) (prptr->prstkptr = (char *)saddr);
 	restore(mask);
+
+	insert(pid, readylist, prptr->prprio); //insert into ready list
+	resched(); //Reschedule processor to highest priority eligible process
 	return pid;
 }
 

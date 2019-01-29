@@ -215,7 +215,7 @@ gdt1:
 	/*
 	 * Call the nulluser to initialize the system
 	 */
-	call	nulluser
+	call	nulluser 
 	call	halt
 
 	.globl	inb

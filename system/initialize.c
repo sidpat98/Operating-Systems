@@ -80,17 +80,26 @@ void	nulluser()
 
         // Limit network relevant calls for CS503 courses   
 	// Initialize the network stack and start processes 
-
 	//net_init();
 
 	// Create a process to finish startup and start main 
 
 	resume(create((void *)startup, INITSTK, INITPRIO,
 					"Startup process", 0, NULL));
+	//create1((void *)startup, INITSTK, INITPRIO,"Startup process", 0, NULL);
+	
 
 	// Become the Null process (i.e., guarantee that the CPU has	
 	//  something to run when no other process is ready to execute)	
 	welcome();
+	
+	#if XTEST
+	int a=10;
+	int b=0;
+	int c;
+	c=a/b;
+	#endif
+
 	while (TRUE) {
 		;		// Do nothing 
 	}
@@ -132,6 +141,8 @@ local process	startup(void)
 
 	resume(create((void *)main, INITSTK, INITPRIO,
 					"Main process", 0, NULL));
+
+	//create1((void *)main, INITSTK, INITPRIO,"Main process", 0, NULL);
 
 	/* Startup process exits at this point */
 
@@ -192,12 +203,18 @@ static	void	sysinit()
 
 	prptr = &proctab[NULLPROC];
 	prptr->prstate = PR_CURR;
+	#if XTEST
 	kprintf("The process state is: %d\n", prptr->prstate);
+	#endif
 	prptr->prprio = 0;
+	#if XTEST
 	kprintf("The prioroty is: %d\n", prptr->prprio);	
+	#endif
 	strncpy(prptr->prname, "prnull", 7);
 	prptr->prstkbase = getstk(NULLSTK);
-	kprintf("The stack pointer is: %x\n", prptr->prstkbase);
+	#if XTEST
+	kprintf("The beginning address of rts is: 0x0%x\n", prptr->prstkbase);
+	#endif
 	prptr->prstklen = NULLSTK;
 	prptr->prstkptr = 0;
 	currpid = NULLPROC;
@@ -243,7 +260,7 @@ int32	delay(int n)
 	return OK;
 }
 
-/*void	nulluser1()
+void	nulluser1()
 {	
 	struct	memblk	*memptr;	// Ptr to memory block		
 	uint32	free_mem;		// Total amount of free memory	
@@ -290,9 +307,16 @@ int32	delay(int n)
 	// Become the Null process (i.e., guarantee that the CPU has	
 	//  something to run when no other process is ready to execute)	
 	welcome();
+	#if XTEST
+	int a=10;
+	int b=0;
+	int c;
+	c=a/b;
+	#endif
+
 	while (TRUE) {
 		;		// Do nothing 
 	}
 
-}*/
+}
 

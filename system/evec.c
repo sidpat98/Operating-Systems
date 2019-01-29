@@ -165,6 +165,10 @@ void	trap (
 
 	/* Print the trap message */
 
+	kprintf("\n******************\n");
+	kprintf("Siddhesh Patil\n");
+	kprintf("patil33\n");
+	kprintf("******************\n");
 	kprintf("Xinu trap!\n");
 	if (inum < 16) {
 		kprintf("exception %d (%s) currpid %d (%s)\n", inum,

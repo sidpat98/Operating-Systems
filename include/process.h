@@ -1,5 +1,10 @@
 /* process.h - isbadpid */
 
+//define macros
+#ifndef XTEST
+#define XTEST 1
+#endif
+
 /* Maximum number of processes in the system */
 
 #ifndef NPROC
@@ -7,7 +12,6 @@
 #endif		
 
 /* Process state constants */
-
 #define	PR_FREE		0	/* Process table entry is unused	*/
 #define	PR_CURR		1	/* Process is currently running		*/
 #define	PR_READY	2	/* Process is on ready queue		*/
@@ -37,6 +41,8 @@
 /* Number of device descriptors a process can have open */
 
 #define NDESC		5	/* must be odd to make procent 4N bytes	*/
+
+
 
 /* Definition of the process table (multiple of 32 bits) */
 
