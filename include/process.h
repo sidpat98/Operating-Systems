@@ -2,7 +2,7 @@
 
 //define macros
 #ifndef XTEST
-#define XTEST 1
+#define XTEST 0
 #endif
 
 /* Maximum number of processes in the system */
