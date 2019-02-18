@@ -12,6 +12,9 @@
 	.globl	spurious_irq7
 	.globl	spurious_irq15
 
+	.globl khello
+	.globl chprio
+
 /*------------------------------------------------------------------------
  * disable  -  Disable interrupts and return the previous state
  *------------------------------------------------------------------------
@@ -454,18 +457,24 @@ _Xint35:
 	pushal
 	movl	%esp, %eax
 	pushl	%eax
-	pushl	$35
-	jmp	Xtrap
+	call khello 	/* call C function khello */
+	pop %eax
+	popal  		/* push the return address in EIP onto the run-time stack of the current process */
+	pop %ebp
+	iret 
 
 	.globl  _Xint36			/* available for ext. interrupt	*/
 _Xint36:
 	pushl	%ebp
 	movl	%esp,%ebp
-	pushal
+	pushl %ecx
+	pushl %ebx
 	movl	%esp, %eax
-	pushl	%eax
-	pushl	$36
-	jmp	Xtrap
+	call chprio
+	popl %ebx
+	popl %ecx    
+	pop %ebp	
+	iret			
 
 	.globl  _Xint37			/* available for ext. interrupt	*/
 _Xint37:

@@ -22,9 +22,9 @@ void	clkinit(void)
 	/* Initialize the preemption count */
 
 	preempt = QUANTUM;
-
+	
 	/* Initialize the time since boot to zero */
-
+	
 	clktime = 0;
 
 	/* Set interrupt vector for the clock to invoke clkdisp */

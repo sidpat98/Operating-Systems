@@ -37,29 +37,29 @@ pid32	create(
 
 	prcount++;
 	prptr = &proctab[pid];
-
+	//#if XTEST
+	//kprintf("\nThe pid is: %d\n", pid);
+	//#endif
 	/* Initialize process table entry for new process */
 	prptr->prstate = PR_SUSP;	/* Initial state is suspended	*/
-	#if XTEST
-	kprintf("The process state is: %d\n", prptr->prstate);
-	#endif
+	//#if XTEST
+	//kprintf("The process state is: %d\n", prptr->prstate);
+	//#endif
 	prptr->prprio = priority;
-	#if XTEST
-	kprintf("The prioroty is: %d\n", prptr->prprio);
-	#endif
+	
 	prptr->prstkbase = (char *)saddr;
-	#if XTEST
-	kprintf("The stack pointer is: %x\n", prptr->prstkbase);
-	#endif
+	//#if XTEST
+	//kprintf("The stack pointer is: %x\n", prptr->prstkbase);
+	//#endif
 	prptr->prstklen = ssize;
 	prptr->prname[PNMLEN-1] = NULLCH;
 	for (i=0 ; i<PNMLEN-1 && (prptr->prname[i]=name[i])!=NULLCH; i++)
 		;
 	prptr->prsem = -1;
 	prptr->prparent = (pid32)getpid();
-	#if XTEST
-	kprintf("The ppid is: %d\n", prptr->prparent);
-	#endif
+	//#if XTEST
+	//kprintf("The ppid is: %d\n", prptr->prparent);
+	//#endif
 	prptr->prhasmsg = FALSE;
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/

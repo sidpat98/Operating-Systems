@@ -2,7 +2,11 @@
 
 //define macros
 #ifndef XTEST
-#define XTEST 0
+#define XTEST 1
+#endif
+
+#ifndef XDEBUG
+#define XDEBUG 1
 #endif
 
 /* Maximum number of processes in the system */

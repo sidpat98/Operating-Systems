@@ -93,12 +93,12 @@ void	nulluser()
 	//  something to run when no other process is ready to execute)	
 	welcome();
 	
-	#if XTEST
-	int a=10;
-	int b=0;
-	int c;
-	c=a/b;
-	#endif
+	//#if XTEST
+	//int a=10;
+	//int b=0;
+	//int c;
+	//c=a/b;
+	//#endif
 
 	while (TRUE) {
 		;		// Do nothing 
@@ -203,18 +203,9 @@ static	void	sysinit()
 
 	prptr = &proctab[NULLPROC];
 	prptr->prstate = PR_CURR;
-	#if XTEST
-	kprintf("The process state is: %d\n", prptr->prstate);
-	#endif
 	prptr->prprio = 0;
-	#if XTEST
-	kprintf("The prioroty is: %d\n", prptr->prprio);	
-	#endif
 	strncpy(prptr->prname, "prnull", 7);
 	prptr->prstkbase = getstk(NULLSTK);
-	#if XTEST
-	kprintf("The beginning address of rts is: 0x0%x\n", prptr->prstkbase);
-	#endif
 	prptr->prstklen = NULLSTK;
 	prptr->prstkptr = 0;
 	currpid = NULLPROC;
@@ -307,13 +298,7 @@ void	nulluser1()
 	// Become the Null process (i.e., guarantee that the CPU has	
 	//  something to run when no other process is ready to execute)	
 	welcome();
-	#if XTEST
-	int a=10;
-	int b=0;
-	int c;
-	c=a/b;
-	#endif
-
+	
 	while (TRUE) {
 		;		// Do nothing 
 	}
