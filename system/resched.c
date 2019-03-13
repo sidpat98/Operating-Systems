@@ -23,9 +23,22 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	/* Point to process table entry for the current (old) process */
 
 	ptold = &proctab[currpid];
+	ptold->prvcputime = ptold->prvcputime + clktimefine - processStart;
+	ptold->prcputime = ptold->prvcputime;
+
+	/* 	Null process priority should always be 0 and never be updated	*/
+	if(currpid != NULLPROC){
+	ptold->prprio = MAXPRIO - ptold->prvcputime; /*	priority becomes 30000 - prvcputime	*/
+	//kprintf("currpid, prvcputime %d %d\n", currpid, ptold->prvcputime);
+	}
+	
+	
+	processStart = clktimefine;
+
 
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
 		if (ptold->prprio > firstkey(readylist)) {
+			// kprintf("Trying to resced from %d \n", currpid);
 			return;
 		}
 
@@ -36,13 +49,16 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	}
 
 	/* Force context switch to highest priority ready process */
-
+	pid32 oldpid = currpid;
 	currpid = dequeue(readylist);
 	ptnew = &proctab[currpid];
 	ptnew->prstate = PR_CURR;
+
 	preempt = QUANTUM;		/* Reset time slice for process	*/
+	// kprintf("oldpid , newpid: %d, %d\n", oldpid, currpid);
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
+	
 	/* Old process returns here when resumed */
 
 	return;

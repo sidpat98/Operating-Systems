@@ -34,24 +34,24 @@ pid32	create(
 		restore(mask);
 		return SYSERR;
 	}
-
 	prcount++;
 	prptr = &proctab[pid];
-
 	/* Initialize process table entry for new process */
 	prptr->prstate = PR_SUSP;	/* Initial state is suspended	*/
-	kprintf("2 The process state is: %d\n", prptr->prstate);
-	prptr->prprio = priority;
-	kprintf("2 The prioroty is: %d\n", prptr->prprio);
 	prptr->prstkbase = (char *)saddr;
-	kprintf("2 The stack pointer is: %x\n", prptr->prstkbase);
 	prptr->prstklen = ssize;
+	prptr->prcputime = proctab[lastid(readylist)].prcputime; /* Initialized to minimum CPU usage across all ready processes	*/
+	prptr->prvcputime = proctab[lastid(readylist)].prvcputime; /* Initialized to minimum CPU usage across all ready processes */
+	//prptr->prprio = MAXPRIO - prptr->prvcputime; /*	priority only updated in resched.c */
+	prptr->prbdate = clktimefine; /* the age of the process in ms */
+
+	//kprintf("the clktimefine is %d\n:", prptr->prbdate);
 	prptr->prname[PNMLEN-1] = NULLCH;
 	for (i=0 ; i<PNMLEN-1 && (prptr->prname[i]=name[i])!=NULLCH; i++)
 		;
 	prptr->prsem = -1;
 	prptr->prparent = (pid32)getpid();
-	kprintf("The ppid is: %d\n", prptr->prparent);
+	//kprintf("The ppid is: %d\n", prptr->prparent);
 	prptr->prhasmsg = FALSE;
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/

@@ -6,6 +6,8 @@ uint32	clktime;		/* Seconds since boot			*/
 uint32	ctr1000 = 0;		/* Milliseconds since boot		*/
 qid16	sleepq;			/* Queue of sleeping processes		*/
 uint32	preempt;		/* Preemption counter			*/
+uint32 clktimefine;
+uint32 processStart = 0;
 
 /*------------------------------------------------------------------------
  * clkinit  -  Initialize the clock and sleep queue at startup (x86)
@@ -26,6 +28,8 @@ void	clkinit(void)
 	/* Initialize the time since boot to zero */
 
 	clktime = 0;
+	clktimefine = 0;
+	//clktimebefore = clktimefine;
 
 	/* Set interrupt vector for the clock to invoke clkdisp */
 

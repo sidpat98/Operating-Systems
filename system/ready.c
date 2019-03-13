@@ -22,6 +22,8 @@ status	ready(
 
 	prptr = &proctab[pid];
 	prptr->prstate = PR_READY;
+	prptr->prvcputime = proctab[firstid(readylist)].prvcputime; /*given value of the first id in the ready list */
+	prptr->prcputime = proctab[firstid(readylist)].prcputime; /*given value of the first id in the ready list */
 	insert(pid, readylist, prptr->prprio);
 	resched();
 

@@ -1,5 +1,36 @@
 /* process.h - isbadpid */
 
+/*	define macros	*/
+
+#ifndef XTEST
+#define XTEST 1
+#endif
+
+#ifndef XDEBUG
+#define XDEBUG 0
+#endif
+
+#ifndef XTESTA
+#define XTESTA 1
+#endif
+
+#ifndef XTESTB
+#define XTESTB 0
+#endif
+
+#ifndef XTESTC
+#define XTESTC 0
+#endif
+
+#ifndef XTESTD
+#define XTESTD 0
+#endif
+
+#ifndef XTESTBONUS
+#define XTESTBONUS 0
+#endif
+
+
 /* Maximum number of processes in the system */
 
 #ifndef NPROC
@@ -27,6 +58,7 @@
 #define	INITSTK		65536	/* Initial process stack size		*/
 #define	INITPRIO	20	/* Initial process priority		*/
 #define	INITRET		userret	/* Address to which process returns	*/
+static const uint32 MAXPRIO = 30000;  /* upper bound for process priority     */
 
 /* Inline code to check process ID (assumes interrupts are disabled)	*/
 
@@ -42,6 +74,9 @@
 
 struct procent {		/* Entry in the process table		*/
 	uint16	prstate;	/* Process state: PR_CURR, etc.		*/
+	uint32  prbdate;	/* specifies time when the process in created	 */
+	uint32  prcputime;  	/* tracks CPU usage 	*/
+	uint32 	prvcputime; 	/* virtual CPU usage, upadated by i. and ii.	*/
 	pri16	prprio;		/* Process priority			*/
 	char	*prstkptr;	/* Saved stack pointer			*/
 	char	*prstkbase;	/* Base of run time stack		*/

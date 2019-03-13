@@ -6,10 +6,17 @@
  * clkhandler - high level clock interrupt handler
  *------------------------------------------------------------------------
  */
+
 void	clkhandler()
 {
 	static	uint32	count1000 = 1000;	/* Count to 1000 ms	*/
+	//static uint32 count1 = 1; 
 
+	//uint32 clktimefine;
+	//if((--count1 <= 0)){
+	clktimefine++; /* increment clktimefine every one ms*/
+	//	count1 = 1;
+	//}
 	/* Decrement the ms counter, and see if a second has passed */
 
 	if((--count1000) <= 0) {

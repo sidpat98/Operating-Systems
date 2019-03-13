@@ -132,7 +132,7 @@ local process	startup(void)
 
 	resume(create((void *)main, INITSTK, INITPRIO,
 					"Main process", 0, NULL));
-
+	
 	/* Startup process exits at this point */
 
 	return OK;
@@ -191,13 +191,13 @@ static	void	sysinit()
 	/* Initialize the Null process entry */	
 
 	prptr = &proctab[NULLPROC];
+	prptr->prcputime = 0; 
+	prptr->prvcputime = 0;
+	prptr->prbdate = clktimefine;
 	prptr->prstate = PR_CURR;
-	kprintf("The process state is: %d\n", prptr->prstate);
-	prptr->prprio = 0;
-	kprintf("The prioroty is: %d\n", prptr->prprio);	
+	prptr->prprio = 0; 			/* always zero		*/
 	strncpy(prptr->prname, "prnull", 7);
 	prptr->prstkbase = getstk(NULLSTK);
-	kprintf("The stack pointer is: %x\n", prptr->prstkbase);
 	prptr->prstklen = NULLSTK;
 	prptr->prstkptr = 0;
 	currpid = NULLPROC;
